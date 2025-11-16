@@ -19,11 +19,12 @@ import {
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import { captionTemplates, niches, platforms } from "@/lib/data";
+import { niches, platforms } from "@/lib/data";
 import type { CaptionTemplate } from "@/lib/definitions";
 import { useToast } from "@/hooks/use-toast";
 import { Clipboard, RefreshCw, Loader2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
+import { generateCaptionTemplate } from "@/ai/flows/caption-template-flow";
 
 export default function CaptionTemplatesTab() {
   const [niche, setNiche] = useState<string>("");
@@ -33,7 +34,7 @@ export default function CaptionTemplatesTab() {
   const [generating, setGenerating] = useState(false);
   const { toast } = useToast();
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!niche || !platform) {
       toast({
         title: "Selection Incomplete",
@@ -44,24 +45,36 @@ export default function CaptionTemplatesTab() {
     }
 
     setGenerating(true);
-    setTimeout(() => {
-      const filteredTemplates = captionTemplates.filter(
-        (t) => t.niche === niche && t.platform === platform
-      );
+    setResult(null);
 
-      if (filteredTemplates.length === 0) {
+    try {
+      const platformName = platforms.find(p => p.id === platform)?.name || platform;
+      const result = await generateCaptionTemplate({
+        niche,
+        platform: platformName,
+        wordCount: wordCount[0],
+      });
+
+      if (!result || !result.template) {
         toast({
-          title: "No Templates Found",
-          description: "No caption templates available for this combination.",
+          title: "No Template Found",
+          description: "The AI couldn't generate a caption. Please try again.",
           variant: "destructive",
         });
         setResult(null);
       } else {
-        const randomIndex = Math.floor(Math.random() * filteredTemplates.length);
-        setResult(filteredTemplates[randomIndex]);
+        setResult(result);
       }
+    } catch (error) {
+      console.error("Error generating caption template:", error);
+      toast({
+        title: "An Error Occurred",
+        description: "Failed to generate a caption. Please check the console and try again.",
+        variant: "destructive",
+      });
+    } finally {
       setGenerating(false);
-    }, 500);
+    }
   };
 
   const handleCopy = () => {
@@ -78,7 +91,7 @@ export default function CaptionTemplatesTab() {
     <div className="space-y-6">
       <Card className="shadow-lg">
         <CardHeader>
-          <CardTitle>Caption Template Generator</CardTitle>
+          <CardTitle>AI Caption Template Generator</CardTitle>
           <CardDescription>
             Instantly create engaging captions for your posts. Select your niche
             and platform to get started.
