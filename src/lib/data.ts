@@ -206,6 +206,11 @@ export const captionTemplates: CaptionTemplate[] = [
     platform: "instagram",
     template: "Chasing horizons and collecting moments, not things. ✨ This view was worth every single step of the hike. \n\nWhere is the most beautiful place you've ever been? 🌍\n\n#Wanderlust #TravelMore #NaturePhotography #ExploreTheWorld",
   },
+    {
+    niche: "Travel & Adventure",
+    platform: "youtube",
+    template: "Chasing horizons and collecting moments, not things. ✨ This view was worth every single step of the hike. \n\nWhere is the most beautiful place you've ever been? 🌍\n\n#Wanderlust #TravelMore #NaturePhotography #ExploreTheWorld",
+  },
   {
     niche: "Technology & Gadgets",
     platform: "x",
