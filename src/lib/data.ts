@@ -29,7 +29,7 @@ export const platforms: Platform[] = [
   { id: "pinterest", name: "Pinterest", icon: Bot }, // Using 'Bot' as a placeholder
   { id: "snapchat", name: "Snapchat", icon: Camera },
   { id: "threads", name: "Threads", icon: MessageCircle },
-  { id: "reddit", name: "Reddit", icon: Book }, // Using 'Book' as a placeholder
+  { id: "reddit", name: "Reddit", icon: Bot }, // Using 'Bot' as a placeholder
 ];
 
 export const niches: string[] = [

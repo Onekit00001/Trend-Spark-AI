@@ -25,7 +25,7 @@ const prompt = ai.definePrompt({
   output: { schema: GenerateContentIdeasOutputSchema },
   prompt: `You are a viral content strategist. Generate 5 unique, engaging content ideas for the following niche: {{{niche}}} and platforms: {{{platforms}}}.
 
-Provide a catchy hook, a format, relevant hashtags, a call to action, a 5-step elaboration, and a simple flowchart for each idea. Ensure the output is a JSON object with an 'ideas' array.`,
+Provide a catchy hook, a format, 3-5 relevant hashtags, a call to action, a 5-step elaboration, and a simple flowchart for each idea. Ensure the output is a JSON object with an 'ideas' array.`,
 });
 
 const generateContentIdeasFlow = ai.defineFlow(
@@ -36,7 +36,7 @@ const generateContentIdeasFlow = ai.defineFlow(
   },
   async (input) => {
     const {output} = await prompt(input);
-    if (!output) {
+    if (!output || !output.ideas) {
       return { ideas: [] };
     }
     return { ideas: output.ideas.map((idea, index) => ({...idea, id: Date.now() + index})) };

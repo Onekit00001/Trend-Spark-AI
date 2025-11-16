@@ -92,10 +92,9 @@ export default function ContentIdeasTab() {
         setResults(result.ideas);
       }
     } catch (error) {
-      console.error("Error generating content ideas:", error);
       toast({
         title: "An Error Occurred",
-        description: "Failed to generate content ideas. Please check the console and try again.",
+        description: "Failed to generate content ideas. Please try again later.",
         variant: "destructive",
       });
     } finally {

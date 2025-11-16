@@ -66,10 +66,9 @@ export default function CaptionTemplatesTab() {
         setResult(result);
       }
     } catch (error) {
-      console.error("Error generating caption template:", error);
       toast({
         title: "An Error Occurred",
-        description: "Failed to generate a caption. Please check the console and try again.",
+        description: "Failed to generate a caption. Please try again later.",
         variant: "destructive",
       });
     } finally {
