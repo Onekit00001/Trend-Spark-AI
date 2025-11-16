@@ -25,7 +25,7 @@ const prompt = ai.definePrompt({
   output: { schema: GenerateContentIdeasOutputSchema },
   prompt: `You are a viral content strategist. Generate 5 unique, engaging content ideas for the following niche: {{{niche}}} and platforms: {{{platforms}}}.
 
-For each idea, provide a unique 'id' (as a random number), a catchy hook, a format, 3-5 relevant hashtags, a call to action, a 5-step elaboration, and a simple flowchart. Ensure the output is a JSON object with an 'ideas' array.`,
+For each idea, provide a unique 'id' (as a random number), a catchy hook, a format, 3-5 relevant hashtags, a call to action, a 5-step elaboration, and a simple flowchart. The elaboration for each idea should be around {{{wordCount}}} words. Ensure the output is a JSON object with an 'ideas' array.`,
 });
 
 const generateContentIdeasFlow = ai.defineFlow(
