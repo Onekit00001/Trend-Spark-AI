@@ -11,8 +11,9 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs";
 import {FileText, Hash, Lightbulb} from "lucide-react";
+import { NextRequest } from "next/server";
 
-export default function Home() {
+export default function Home(request: NextRequest) {
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
       <Header />

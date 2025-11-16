@@ -27,12 +27,13 @@ import {
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import { contentIdeas, niches, platforms } from "@/lib/data";
+import { niches, platforms } from "@/lib/data";
 import type { ContentIdea, Platform } from "@/lib/definitions";
 import { useToast } from "@/hooks/use-toast";
 import IdeaCard from "./idea-card";
 import { ChevronDown, Lightbulb, Loader2 } from "lucide-react";
 import AdPlaceholder from "./ad-placeholder";
+import { generateContentIdeas } from "@/ai/flows/content-ideas-flow";
 
 const getPlatformIcon = (platformId: string) => {
   const platform = platforms.find((p) => p.id === platformId);
@@ -61,7 +62,7 @@ export default function ContentIdeasTab() {
     });
   };
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!niche || selectedPlatforms.size === 0) {
       toast({
         title: "Selection Incomplete",
@@ -72,25 +73,34 @@ export default function ContentIdeasTab() {
     }
 
     setGenerating(true);
-    setTimeout(() => {
-      // In a real app, you'd also filter by word count. We'll simulate it.
-      const filteredIdeas = contentIdeas.filter(
-        (idea) => idea.niche === niche
-      );
+    setResults([]);
 
-      if (filteredIdeas.length === 0) {
+    try {
+      const result = await generateContentIdeas({
+        niche,
+        platforms: Array.from(selectedPlatforms),
+      });
+
+      if (!result.ideas || result.ideas.length === 0) {
         toast({
           title: "No Ideas Found",
-          description: "No content ideas available for this niche.",
+          description: "The AI couldn't generate ideas for this combination. Please try again.",
           variant: "destructive",
         });
         setResults([]);
       } else {
-        const shuffled = [...filteredIdeas].sort(() => 0.5 - Math.random());
-        setResults(shuffled.slice(0, 5));
+        setResults(result.ideas);
       }
+    } catch (error) {
+      console.error("Error generating content ideas:", error);
+      toast({
+        title: "An Error Occurred",
+        description: "Failed to generate content ideas. Please check the console and try again.",
+        variant: "destructive",
+      });
+    } finally {
       setGenerating(false);
-    }, 750);
+    }
   };
 
   return (
