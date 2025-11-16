@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -200,14 +200,14 @@ export default function ContentIdeasTab() {
         <div className="space-y-4">
           <h2 className="text-2xl font-bold tracking-tight">Your Ideas</h2>
           {results.map((idea, index) => (
-            <>
+            <React.Fragment key={idea.id}>
               {index === 1 && (
                 <div className="my-4 md:hidden">
                   <AdPlaceholder type="in-feed" />
                 </div>
               )}
-              <IdeaCard key={idea.id} idea={idea} />
-            </>
+              <IdeaCard idea={idea} />
+            </React.Fragment>
           ))}
         </div>
       )}
