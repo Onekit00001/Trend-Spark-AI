@@ -20,17 +20,17 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { niches, platforms } from "@/lib/data";
-import type { CaptionTemplate } from "@/lib/definitions";
 import { useToast } from "@/hooks/use-toast";
 import { Clipboard, RefreshCw, Loader2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { generateCaptionTemplate } from "@/ai/flows/caption-template-flow";
+import { GenerateCaptionTemplateOutput } from "@/ai/schemas/caption-template-schema";
 
 export default function CaptionTemplatesTab() {
   const [niche, setNiche] = useState<string>("");
   const [platform, setPlatform] = useState<string>("");
   const [wordCount, setWordCount] = useState([100]);
-  const [result, setResult] = useState<CaptionTemplate | null>(null);
+  const [result, setResult] = useState<GenerateCaptionTemplateOutput | null>(null);
   const [generating, setGenerating] = useState(false);
   const { toast } = useToast();
 
@@ -49,13 +49,13 @@ export default function CaptionTemplatesTab() {
 
     try {
       const platformName = platforms.find(p => p.id === platform)?.name || platform;
-      const result = await generateCaptionTemplate({
+      const captionResult = await generateCaptionTemplate({
         niche,
         platform: platformName,
         wordCount: wordCount[0],
       });
 
-      if (!result || !result.template) {
+      if (!captionResult || !captionResult.template) {
         toast({
           title: "No Template Found",
           description: "The AI couldn't generate a caption. Please try again.",
@@ -63,12 +63,13 @@ export default function CaptionTemplatesTab() {
         });
         setResult(null);
       } else {
-        setResult(result);
+        setResult(captionResult);
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Caption generation error:", error);
       toast({
         title: "An Error Occurred",
-        description: "Failed to generate a caption. Please try again later.",
+        description: error.message || "Failed to generate a caption. Please try again later.",
         variant: "destructive",
       });
     } finally {
@@ -77,7 +78,7 @@ export default function CaptionTemplatesTab() {
   };
 
   const handleCopy = () => {
-    if (result) {
+    if (result && result.template) {
       navigator.clipboard.writeText(result.template);
       toast({
         title: "Copied to Clipboard!",
@@ -100,7 +101,7 @@ export default function CaptionTemplatesTab() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="niche-select-caption">Niche</Label>
-              <Select onValueChange={setNiche} value={niche}>
+              <Select onValueChange={setNiche} value={niche} disabled={generating}>
                 <SelectTrigger id="niche-select-caption">
                   <SelectValue placeholder="Select a niche..." />
                 </SelectTrigger>
@@ -115,7 +116,7 @@ export default function CaptionTemplatesTab() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="platform-select-caption">Platform</Label>
-              <Select onValueChange={setPlatform} value={platform}>
+              <Select onValueChange={setPlatform} value={platform} disabled={generating}>
                 <SelectTrigger id="platform-select-caption">
                   <SelectValue placeholder="Select a platform..." />
                 </SelectTrigger>
@@ -140,6 +141,7 @@ export default function CaptionTemplatesTab() {
               step={10}
               value={wordCount}
               onValueChange={setWordCount}
+              disabled={generating}
             />
           </div>
         </CardContent>
@@ -154,6 +156,13 @@ export default function CaptionTemplatesTab() {
           </Button>
         </CardFooter>
       </Card>
+
+      {generating && (
+         <div className="flex justify-center items-center py-8">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <p className="ml-4 text-muted-foreground">Crafting your caption...</p>
+        </div>
+      )}
 
       {result && (
         <Card className="shadow-lg animate-in fade-in-50">

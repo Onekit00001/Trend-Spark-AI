@@ -41,6 +41,7 @@ export default function HashtagGeneratorTab() {
       return;
     }
     setGenerating(true);
+    setResults([]);
     setTimeout(() => {
       const allHashtags = hashtagSets[niche] || [];
       if (allHashtags.length === 0) {
@@ -83,7 +84,7 @@ export default function HashtagGeneratorTab() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="niche-select-hashtag">Niche</Label>
-              <Select onValueChange={setNiche} value={niche}>
+              <Select onValueChange={setNiche} value={niche} disabled={generating}>
                 <SelectTrigger id="niche-select-hashtag">
                   <SelectValue placeholder="Select a niche..." />
                 </SelectTrigger>
@@ -105,6 +106,7 @@ export default function HashtagGeneratorTab() {
                 step={1}
                 value={count}
                 onValueChange={setCount}
+                disabled={generating}
               />
             </div>
           </div>
@@ -120,6 +122,13 @@ export default function HashtagGeneratorTab() {
           </Button>
         </CardFooter>
       </Card>
+      
+      {generating && (
+         <div className="flex justify-center items-center py-8">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <p className="ml-4 text-muted-foreground">Finding the best hashtags...</p>
+        </div>
+      )}
 
       {results.length > 0 && (
         <Card className="shadow-lg animate-in fade-in-50">

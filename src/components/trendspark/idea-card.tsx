@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { type ContentIdea } from "@/lib/definitions";
-import { Clipboard, ListOrdered, Share2, Target, Zap } from "lucide-react";
+import { Clipboard, ListOrdered, Share2, Target, Zap, Workflow } from "lucide-react";
 
 type IdeaCardProps = {
   idea: ContentIdea;
@@ -44,7 +44,7 @@ Flowchart: ${idea.flowchart}
 
   return (
     <Card className="overflow-hidden shadow-lg animate-in fade-in-50">
-      <CardHeader className="bg-muted/30">
+      <CardHeader className="bg-muted/30 p-4">
         <h3 className="font-semibold text-lg">{idea.hook}</h3>
       </CardHeader>
       <CardContent className="p-0">
@@ -56,7 +56,7 @@ Flowchart: ${idea.flowchart}
                 <span>Format</span>
               </div>
             </AccordionTrigger>
-            <AccordionContent className="px-6">{idea.format}</AccordionContent>
+            <AccordionContent className="px-6 pb-4">{idea.format}</AccordionContent>
           </AccordionItem>
           <AccordionItem value="hashtags">
             <AccordionTrigger className="px-6">
@@ -65,7 +65,7 @@ Flowchart: ${idea.flowchart}
                 <span>Hashtags</span>
               </div>
             </AccordionTrigger>
-            <AccordionContent className="px-6 flex flex-wrap gap-2">
+            <AccordionContent className="px-6 pb-4 flex flex-wrap gap-2">
               {idea.hashtags.map((tag) => (
                 <Badge key={tag} variant="secondary">
                   {tag}
@@ -80,7 +80,8 @@ Flowchart: ${idea.flowchart}
                 <span>Call to Action (CTA)</span>
               </div>
             </AccordionTrigger>
-            <AccordionContent className="px-6">{idea.cta}</AccordionContent>
+            <AccordionContent className="px-6 pb-4">{idea.cta}</AccordionContent>
+
           </AccordionItem>
           <AccordionItem value="elaboration">
             <AccordionTrigger className="px-6">
@@ -89,12 +90,23 @@ Flowchart: ${idea.flowchart}
                 <span>5-Step Elaboration</span>
               </div>
             </AccordionTrigger>
-            <AccordionContent className="px-6">
+            <AccordionContent className="px-6 pb-4">
               <ol className="list-decimal list-inside space-y-2">
                 {idea.elaboration.map((step, i) => (
                   <li key={i}>{step}</li>
                 ))}
               </ol>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="flowchart" className="border-b-0">
+            <AccordionTrigger className="px-6 text-left">
+              <div className="flex items-center gap-3">
+                <Workflow className="h-5 w-5 text-primary" />
+                <span>Text Flowchart</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="px-6 pb-4 font-mono text-sm bg-slate-100 dark:bg-slate-800 p-4 rounded-md">
+              <pre><code>{idea.flowchart}</code></pre>
             </AccordionContent>
           </AccordionItem>
         </Accordion>

@@ -25,7 +25,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { niches, platforms } from "@/lib/data";
 import type { ContentIdea, Platform } from "@/lib/definitions";
@@ -35,17 +34,11 @@ import { ChevronDown, Lightbulb, Loader2 } from "lucide-react";
 import AdPlaceholder from "./ad-placeholder";
 import { generateContentIdeas } from "@/ai/flows/content-ideas-flow";
 
-const getPlatformIcon = (platformId: string) => {
-  const platform = platforms.find((p) => p.id === platformId);
-  return platform ? <platform.icon className="h-4 w-4" /> : null;
-};
-
 export default function ContentIdeasTab() {
   const [niche, setNiche] = useState<string>("");
   const [selectedPlatforms, setSelectedPlatforms] = useState<Set<string>>(
     new Set()
   );
-  const [wordCount, setWordCount] = useState([250]);
   const [results, setResults] = useState<ContentIdea[]>([]);
   const [generating, setGenerating] = useState(false);
   const { toast } = useToast();
@@ -91,10 +84,11 @@ export default function ContentIdeasTab() {
       } else {
         setResults(result.ideas);
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Content idea generation error:", error);
       toast({
         title: "An Error Occurred",
-        description: "Failed to generate content ideas. Please try again later.",
+        description: error.message || "Failed to generate content ideas. Please try again later.",
         variant: "destructive",
       });
     } finally {
@@ -116,7 +110,7 @@ export default function ContentIdeasTab() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="niche-select">Niche</Label>
-              <Select onValueChange={setNiche} value={niche}>
+              <Select onValueChange={setNiche} value={niche} disabled={generating}>
                 <SelectTrigger id="niche-select">
                   <SelectValue placeholder="Select a niche..." />
                 </SelectTrigger>
@@ -133,7 +127,7 @@ export default function ContentIdeasTab() {
               <Label>Platforms</Label>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="w-full justify-between">
+                  <Button variant="outline" className="w-full justify-between" disabled={generating}>
                     {selectedPlatforms.size > 0
                       ? `${selectedPlatforms.size} selected`
                       : "Select platforms..."}
@@ -157,19 +151,6 @@ export default function ContentIdeasTab() {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="word-count">
-              Max Elaboration Word Count: {wordCount[0]}
-            </Label>
-            <Slider
-              id="word-count"
-              min={50}
-              max={500}
-              step={10}
-              value={wordCount}
-              onValueChange={setWordCount}
-            />
           </div>
         </CardContent>
         <CardFooter>
