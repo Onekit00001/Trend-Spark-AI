@@ -16,13 +16,3 @@ export type ContentIdea = {
   elaboration: string[];
   flowchart: string;
 };
-
-export type HashtagSet = {
-  [niche: string]: string[];
-};
-
-export type CaptionTemplate = {
-  niche: string;
-  platform: string;
-  template: string;
-};

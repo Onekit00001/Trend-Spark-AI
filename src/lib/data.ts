@@ -1,8 +1,5 @@
 import type {
   Platform,
-  ContentIdea,
-  HashtagSet,
-  CaptionTemplate,
 } from "./definitions";
 import {
   Youtube,
@@ -14,7 +11,6 @@ import {
   MessageCircle,
   Camera,
   Clapperboard,
-  Book,
 } from "lucide-react";
 
 // In a real-world app, these would come from a database or a much larger file.
@@ -64,13 +60,3 @@ export const niches: string[] = [
   "History",
   "Science Explained",
 ];
-
-export const hashtagSets: HashtagSet = {
-  "Fitness & Health": ["#fitness", "#healthylifestyle", "#workout", "#motivation", "#gymlife", "#fitfam", "#wellness", "#nutrition", "#selfcare", "#getfit", "#trainhard", "#noexcuses", "#mindbody", "#healthyliving", "#fitspo"],
-  "Cooking & Recipes": ["#recipe", "#foodie", "#instafood", "#homemade", "#cooking", "#delicious", "#foodlover", "#eats", "#kitchen", "#chefmode", "#yummy", "#easyrecipes", "#dinnerideas", "#mealprep", "#baking"],
-  "Technology & Gadgets": ["#tech", "#gadgets", "#instatech", "#innovation", "#futuretech", "#techtalk", "#software", "#hardware", "#ai", "#smarttech", "#geek", "#nerdlife", "#unboxing", "#review", "#techtips"],
-  "Personal Finance": ["#finance", "#money", "#investing", "#budget", "#savings", "#financialfreedom", "#wealth", "#stockmarket", "#passiveincome", "#debtfree", "#financialliteracy", "#makemoney", "#entrepreneur", "#sidehustle", "#creditscore"],
-  "Travel & Adventure": ["#travelgram", "#adventure", "#wanderlust", "#explore", "#vacation", "#instatravel", "#travelphotography", "#beautifuldestinations", "#getaway", "#solotravel", "#bucketlist", "#roadtrip", "#naturelover", "#passportready", "#globetrotter"],
-  "DIY & Crafts": ["#diy", "#craft", "#doityourself", "#handmade", "#crafter", "#project", "#upcycle", "#creative", "#makersgonnamake", "#homedecor", "#diyproject", "#imadethis", "#tutorial", "#crafty", "#lifehacks"],
-  "Software Development": ["#coding", "#developer", "#programming", "#javascript", "#python", "#webdev", "#softwareengineer", "#code", "#coderlife", "#reactjs", "#nodejs", "#tech", "#devlife", "#computerscience", "#frontend"],
-};

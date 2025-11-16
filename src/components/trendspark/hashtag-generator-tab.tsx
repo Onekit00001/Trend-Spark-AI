@@ -20,43 +20,54 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { hashtagSets, niches } from "@/lib/data";
+import { niches, platforms } from "@/lib/data";
 import { useToast } from "@/hooks/use-toast";
 import { Clipboard, Hash, Loader2 } from "lucide-react";
+import { generateHashtags } from "@/ai/flows/hashtag-generator-flow";
 
 export default function HashtagGeneratorTab() {
   const [niche, setNiche] = useState<string>("");
+  const [platform, setPlatform] = useState<string>("");
   const [count, setCount] = useState([15]);
   const [results, setResults] = useState<string[]>([]);
   const [generating, setGenerating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
-  const handleGenerate = () => {
-    if (!niche) {
+  const handleGenerate = async () => {
+    if (!niche || !platform) {
       toast({
-        title: "Niche Not Selected",
-        description: "Please select a niche to generate hashtags.",
+        title: "Selection Incomplete",
+        description: "Please select both a niche and a platform.",
         variant: "destructive",
       });
       return;
     }
+
     setGenerating(true);
     setResults([]);
-    setTimeout(() => {
-      const allHashtags = hashtagSets[niche] || [];
-      if (allHashtags.length === 0) {
-        toast({
-          title: "No Hashtags Found",
-          description: "No hashtags available for this niche.",
-          variant: "destructive",
-        });
+    setError(null);
+
+    try {
+      const platformName = platforms.find(p => p.id === platform)?.name || platform;
+      const response = await generateHashtags({
+        niche,
+        platform: platformName,
+        count: count[0],
+      });
+
+      if (!response || !response.hashtags || response.hashtags.length === 0) {
+        setError("The AI couldn't generate hashtags for this combination. Please adjust your selections and try again.");
         setResults([]);
       } else {
-        const shuffled = [...allHashtags].sort(() => 0.5 - Math.random());
-        setResults(shuffled.slice(0, count[0]));
+        setResults(response.hashtags);
       }
+    } catch (e: any) {
+      console.error("Hashtag generation error:", e);
+      setError("An unexpected error occurred while generating hashtags. Please try again.");
+    } finally {
       setGenerating(false);
-    }, 500);
+    }
   };
 
   const handleCopyAll = () => {
@@ -74,10 +85,9 @@ export default function HashtagGeneratorTab() {
     <div className="space-y-6">
       <Card className="shadow-lg">
         <CardHeader>
-          <CardTitle>Hashtag Generator</CardTitle>
+          <CardTitle>AI Hashtag Generator</CardTitle>
           <CardDescription>
-            Boost your reach with optimized hashtags. Select a niche and get a
-            curated list.
+            Boost your reach with AI-optimized hashtags for your niche and platform.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -97,7 +107,23 @@ export default function HashtagGeneratorTab() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
+             <div className="space-y-2">
+              <Label htmlFor="platform-select-hashtag">Platform</Label>
+              <Select onValueChange={setPlatform} value={platform} disabled={generating}>
+                <SelectTrigger id="platform-select-hashtag" className="bg-background">
+                  <SelectValue placeholder="Select a platform..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {platforms.map((p) => (
+                    <SelectItem key={p.id} value={p.id}>
+                      {p.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="space-y-2">
               <Label htmlFor="hashtag-count">Number of Hashtags: {count[0]}</Label>
               <Slider
                 id="hashtag-count"
@@ -109,10 +135,9 @@ export default function HashtagGeneratorTab() {
                 disabled={generating}
               />
             </div>
-          </div>
         </CardContent>
         <CardFooter>
-          <Button onClick={handleGenerate} disabled={generating || !niche}>
+          <Button onClick={handleGenerate} disabled={generating || !niche || !platform}>
             {generating ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (
@@ -128,6 +153,17 @@ export default function HashtagGeneratorTab() {
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
             <p className="ml-4 text-muted-foreground">Finding the best hashtags...</p>
         </div>
+      )}
+
+      {error && !generating && (
+        <Card className="shadow-lg animate-in fade-in-50 border-destructive">
+          <CardHeader>
+            <CardTitle className="text-destructive">Generation Failed</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-destructive-foreground">{error}</p>
+          </CardContent>
+        </Card>
       )}
 
       {results.length > 0 && (
@@ -148,6 +184,12 @@ export default function HashtagGeneratorTab() {
             </Button>
           </CardFooter>
         </Card>
+      )}
+
+      {!generating && results.length === 0 && !error && (
+        <div className="text-center py-10">
+          <p className="text-muted-foreground">Your generated hashtags will appear here.</p>
+        </div>
       )}
     </div>
   );
