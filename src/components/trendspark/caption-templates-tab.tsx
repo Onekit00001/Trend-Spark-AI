@@ -25,6 +25,7 @@ import { Clipboard, RefreshCw, Loader2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { generateCaptionTemplate } from "@/ai/flows/caption-template-flow";
 import { GenerateCaptionTemplateOutput } from "@/ai/schemas/caption-template-schema";
+import AdPlaceholder from "./ad-placeholder";
 
 export default function CaptionTemplatesTab() {
   const [niche, setNiche] = useState<string>("");
@@ -32,6 +33,7 @@ export default function CaptionTemplatesTab() {
   const [wordCount, setWordCount] = useState([100]);
   const [result, setResult] = useState<GenerateCaptionTemplateOutput | null>(null);
   const [generating, setGenerating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleGenerate = async () => {
@@ -46,6 +48,7 @@ export default function CaptionTemplatesTab() {
 
     setGenerating(true);
     setResult(null);
+    setError(null);
 
     try {
       const platformName = platforms.find(p => p.id === platform)?.name || platform;
@@ -56,22 +59,14 @@ export default function CaptionTemplatesTab() {
       });
 
       if (!captionResult || !captionResult.template) {
-        toast({
-          title: "No Template Found",
-          description: "The AI couldn't generate a caption. Please try again.",
-          variant: "destructive",
-        });
+        setError("The AI couldn't generate a template for this combination. Please adjust your selections and try again.");
         setResult(null);
       } else {
         setResult(captionResult);
       }
-    } catch (error: any) {
-      console.error("Caption generation error:", error);
-      toast({
-        title: "An Error Occurred",
-        description: error.message || "Failed to generate a caption. Please try again later.",
-        variant: "destructive",
-      });
+    } catch (e: any) {
+      console.error("Caption generation error:", e);
+      setError("An unexpected error occurred while generating your caption. Please check your connection and try again.");
     } finally {
       setGenerating(false);
     }
@@ -93,8 +88,8 @@ export default function CaptionTemplatesTab() {
         <CardHeader>
           <CardTitle>AI Caption Template Generator</CardTitle>
           <CardDescription>
-            Instantly create engaging captions for your posts. Select your niche
-            and platform to get started.
+            Instantly create engaging captions for your posts. Select your niche,
+            platform, and desired length.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -102,7 +97,7 @@ export default function CaptionTemplatesTab() {
             <div className="space-y-2">
               <Label htmlFor="niche-select-caption">Niche</Label>
               <Select onValueChange={setNiche} value={niche} disabled={generating}>
-                <SelectTrigger id="niche-select-caption">
+                <SelectTrigger id="niche-select-caption" className="bg-background">
                   <SelectValue placeholder="Select a niche..." />
                 </SelectTrigger>
                 <SelectContent>
@@ -117,7 +112,7 @@ export default function CaptionTemplatesTab() {
             <div className="space-y-2">
               <Label htmlFor="platform-select-caption">Platform</Label>
               <Select onValueChange={setPlatform} value={platform} disabled={generating}>
-                <SelectTrigger id="platform-select-caption">
+                <SelectTrigger id="platform-select-caption" className="bg-background">
                   <SelectValue placeholder="Select a platform..." />
                 </SelectTrigger>
                 <SelectContent>
@@ -164,24 +159,24 @@ export default function CaptionTemplatesTab() {
         </div>
       )}
 
-      {result && (
-        <Card className="shadow-lg animate-in fade-in-50">
+      {error && !generating && (
+        <Card className="shadow-lg animate-in fade-in-50 border-destructive">
           <CardHeader>
-            <CardTitle>Generated Caption</CardTitle>
+            <CardTitle className="text-destructive">Generation Failed</CardTitle>
           </CardHeader>
           <CardContent>
-            <Textarea
-              className="min-h-[200px] text-base"
-              value={result.template}
-              readOnly
-            />
+            <p className="text-destructive-foreground">{error}</p>
           </CardContent>
-          <CardFooter className="gap-2">
-            <Button onClick={handleCopy}>
-              <Clipboard className="mr-2 h-4 w-4" /> Copy
-            </Button>
+        </Card>
+      )}
+
+      {result && (
+        <Card className="shadow-lg animate-in fade-in-50">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle>Your Generated Caption</CardTitle>
             <Button
               variant="outline"
+              size="sm"
               onClick={handleGenerate}
               disabled={generating}
             >
@@ -192,8 +187,26 @@ export default function CaptionTemplatesTab() {
               )}
               Regenerate
             </Button>
+          </CardHeader>
+          <CardContent>
+            <Textarea
+              className="min-h-[200px] text-base bg-background"
+              value={result.template}
+              readOnly
+            />
+          </CardContent>
+          <CardFooter className="gap-2">
+            <Button onClick={handleCopy}>
+              <Clipboard className="mr-2 h-4 w-4" /> Copy Template
+            </Button>
           </CardFooter>
         </Card>
+      )}
+      
+      {!generating && !result && !error && (
+        <div className="text-center py-10">
+          <p className="text-muted-foreground">Your generated caption will appear here.</p>
+        </div>
       )}
     </div>
   );

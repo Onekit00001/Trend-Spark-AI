@@ -43,6 +43,7 @@ export default function ContentIdeasTab() {
   const [wordCount, setWordCount] = useState([150]);
   const [results, setResults] = useState<ContentIdea[]>([]);
   const [generating, setGenerating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handlePlatformToggle = (platformId: string) => {
@@ -69,36 +70,40 @@ export default function ContentIdeasTab() {
 
     setGenerating(true);
     setResults([]);
+    setError(null);
 
     try {
+      const platformNames = Array.from(selectedPlatforms)
+        .map(id => platforms.find(p => p.id === id)?.name)
+        .filter(Boolean) as string[];
+        
       const result = await generateContentIdeas({
         niche,
-        platforms: Array.from(selectedPlatforms),
+        platforms: platformNames,
         wordCount: wordCount[0],
       });
 
       if (!result.ideas || result.ideas.length === 0) {
-        toast({
-          title: "No Ideas Found",
-          description: "The AI couldn't generate ideas. Please try again.",
-          variant: "destructive",
-        });
+        setError("The AI couldn't generate ideas for this combination. Please adjust your selections and try again.");
         setResults([]);
       } else {
         setResults(result.ideas);
       }
-    } catch (error: any) {
-      console.error("Content idea generation error:", error);
-      toast({
-        title: "An Error Occurred",
-        description:
-          error.message ||
-          "Failed to generate content ideas. Please try again later.",
-        variant: "destructive",
-      });
+    } catch (e: any) {
+      console.error("Content idea generation error:", e);
+      setError("An unexpected error occurred while generating ideas. Please check your connection and try again.");
     } finally {
       setGenerating(false);
     }
+  };
+  
+  const getSelectedPlatformsText = () => {
+    if (selectedPlatforms.size === 0) return "Select platforms...";
+    if (selectedPlatforms.size === 1) {
+      const id = selectedPlatforms.values().next().value;
+      return platforms.find(p => p.id === id)?.name;
+    }
+    return `${selectedPlatforms.size} platforms selected`;
   };
 
   return (
@@ -107,8 +112,7 @@ export default function ContentIdeasTab() {
         <CardHeader>
           <CardTitle>AI Content Idea Generator</CardTitle>
           <CardDescription>
-            Fuel your content strategy with fresh ideas. Select a niche and your
-            target platforms below.
+            Fuel your content strategy with fresh ideas. Select a niche, platforms, and desired elaboration length.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -120,7 +124,7 @@ export default function ContentIdeasTab() {
                 value={niche}
                 disabled={generating}
               >
-                <SelectTrigger id="niche-select">
+                <SelectTrigger id="niche-select" className="bg-background">
                   <SelectValue placeholder="Select a niche..." />
                 </SelectTrigger>
                 <SelectContent>
@@ -138,13 +142,11 @@ export default function ContentIdeasTab() {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="outline"
-                    className="w-full justify-between"
+                    className="w-full justify-between bg-background"
                     disabled={generating}
                   >
-                    {selectedPlatforms.size > 0
-                      ? `${selectedPlatforms.size} selected`
-                      : "Select platforms..."}
-                    <ChevronDown className="h-4 w-4" />
+                    <span className="truncate">{getSelectedPlatformsText()}</span>
+                    <ChevronDown className="h-4 w-4 flex-shrink-0" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-64">
@@ -204,8 +206,19 @@ export default function ContentIdeasTab() {
           </p>
         </div>
       )}
+      
+      {error && !generating && (
+        <Card className="shadow-lg animate-in fade-in-50 border-destructive">
+          <CardHeader>
+            <CardTitle className="text-destructive">Generation Failed</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-destructive-foreground">{error}</p>
+          </CardContent>
+        </Card>
+      )}
 
-      {results.length > 0 && (
+      {results.length > 0 && !generating && (
         <div className="space-y-4">
           <h2 className="text-2xl font-bold tracking-tight">Your Ideas</h2>
           {results.map((idea, index) => (
@@ -218,6 +231,12 @@ export default function ContentIdeasTab() {
               <IdeaCard idea={idea} />
             </React.Fragment>
           ))}
+        </div>
+      )}
+      
+      {!generating && results.length === 0 && !error && (
+        <div className="text-center py-10">
+          <p className="text-muted-foreground">Your generated content ideas will appear here.</p>
         </div>
       )}
     </div>

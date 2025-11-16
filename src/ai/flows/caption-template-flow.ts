@@ -23,10 +23,18 @@ const prompt = ai.definePrompt({
   name: 'generateCaptionTemplatePrompt',
   input: { schema: GenerateCaptionTemplateInputSchema },
   output: { schema: GenerateCaptionTemplateOutputSchema },
-  prompt: `You are a viral content strategist. Generate a caption template for the following niche: {{{niche}}} and platform: {{{platform}}}. The caption should be around {{{wordCount}}} words.
+  prompt: `You are an expert social media content strategist. Your task is to generate a single, high-quality caption template for the given niche and platform.
 
-The template should be engaging and include placeholders for the user to fill in. It should also include 3-5 relevant hashtags.
-Ensure the output is a JSON object with a 'niche', 'platform', and 'template' field.`,
+The template must be approximately {{{wordCount}}} words.
+It must be engaging, reusable, and include clear placeholders (like "[Your Story]" or "[Tip #1]") for the user to easily fill in.
+The template must also include a set of 3 to 5 relevant and effective hashtags.
+
+Niche: {{{niche}}}
+Platform: {{{platform}}}
+Approximate Word Count: {{{wordCount}}}
+
+Generate the caption template. Ensure your response is a valid JSON object that strictly adheres to the required output format.
+`,
 });
 
 const generateCaptionTemplateFlow = ai.defineFlow(
@@ -37,8 +45,9 @@ const generateCaptionTemplateFlow = ai.defineFlow(
   },
   async (input) => {
     const {output} = await prompt(input);
-    if (!output) {
-      return { niche: input.niche, platform: input.platform, template: "" };
+    if (!output?.template) {
+      console.error("AI failed to generate a valid caption template.");
+      return { niche: input.niche, platform: input.platform, template: "Sorry, we couldn't generate a template. Please try again with different options." };
     }
     return output;
   }
