@@ -3,35 +3,15 @@
  * @fileOverview A content idea generation AI agent.
  *
  * - generateContentIdeas - A function that handles the content idea generation process.
- * - GenerateContentIdeasInput - The input type for the generateContentIdeas function.
- * - GenerateContentIdeasOutput - The return type for the generateContentIdeas function.
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'zod';
-
-export const GenerateContentIdeasInputSchema = z.object({
-  niche: z.string().describe('The niche to generate content ideas for.'),
-  platforms: z.array(z.string()).describe('The platforms to generate content ideas for.'),
-});
-export type GenerateContentIdeasInput = z.infer<typeof GenerateContentIdeasInputSchema>;
-
-const IdeaSchema = z.object({
-  id: z.number(),
-  niche: z.string(),
-  hook: z.string(),
-  format: z.string(),
-  hashtags: z.array(z.string()),
-  cta: z.string(),
-  elaboration: z.array(z.string()),
-  flowchart: z.string(),
-});
-
-export const GenerateContentIdeasOutputSchema = z.object({
-  ideas: z.array(IdeaSchema),
-});
-
-export type GenerateContentIdeasOutput = z.infer<typeof GenerateContentIdeasOutputSchema>;
+import {
+  GenerateContentIdeasInputSchema,
+  GenerateContentIdeasOutputSchema,
+  type GenerateContentIdeasInput,
+  type GenerateContentIdeasOutput
+} from '@/ai/schemas/content-ideas-schema';
 
 
 export async function generateContentIdeas(input: GenerateContentIdeasInput): Promise<GenerateContentIdeasOutput> {
