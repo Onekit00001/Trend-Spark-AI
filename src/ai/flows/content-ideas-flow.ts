@@ -24,7 +24,7 @@ const prompt = ai.definePrompt({
   input: { schema: GenerateContentIdeasInputSchema },
   output: { schema: GenerateContentIdeasOutputSchema },
   prompt: `You are a viral content strategist with expertise in creating engaging social media content.
-Your task is to generate exactly 5 distinct and creative content ideas for the specified niche and platforms.
+Your task is to generate exactly 5 distinct, novel, and creative content ideas for the specified niche and platforms. It is crucial that you generate completely new and distinct ideas that have not been suggested before. Avoid generic or repetitive suggestions.
 
 Niche: {{{niche}}}
 Platforms: {{{platforms}}}

@@ -23,7 +23,7 @@ const prompt = ai.definePrompt({
   name: 'generateCaptionTemplatePrompt',
   input: { schema: GenerateCaptionTemplateInputSchema },
   output: { schema: GenerateCaptionTemplateOutputSchema },
-  prompt: `You are an expert social media content strategist. Your task is to generate a single, high-quality caption template for the given niche and platform.
+  prompt: `You are an expert social media content strategist. Your task is to generate a single, completely new, and high-quality caption template for the given niche and platform. Avoid reusing templates from previous requests.
 
 The template must be approximately {{{wordCount}}} words.
 It must be engaging, reusable, and include clear placeholders (like "[Your Story]" or "[Tip #1]") for the user to easily fill in.

@@ -24,7 +24,7 @@ const prompt = ai.definePrompt({
   input: { schema: GenerateHashtagsInputSchema },
   output: { schema: GenerateHashtagsOutputSchema },
   prompt: `You are a social media expert who specializes in hashtag strategy.
-Your task is to generate a list of highly relevant and effective hashtags.
+Your task is to generate a fresh, unique, and creative list of highly relevant and effective hashtags. Do not repeat suggestions from previous requests.
 
 Niche: {{{niche}}}
 Platform: {{{platform}}}
