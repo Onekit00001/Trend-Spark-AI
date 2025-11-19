@@ -25,11 +25,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-    <meta name="monetag" content="a04dd9ed352c18c8b7f183464aff548f">
-        {/* ← CORRECT FAVICON PATH ← */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        {/* Monetag verification – ये लाइन डालते ही verify हो जाएगा */}
+        <meta name="monetag" content="a04dd9ed352c18c8b7f183464aff548f" />
 
+        {/* सही favicon path */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
+
       <body className="font-body antialiased">
         {children}
         <Toaster />
