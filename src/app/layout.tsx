@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         
         {/* ← ये नई लाइन अभी add कर दो (In-Page Push) */}
         <script src="https://www.effectivegatecpm.com/ifh827nw?key=dc52fbe50ae6cfd56dee1359b404d16b" async></script>
-
+<meta name="monetag" content="a04dd9ed352c18c8b7f183464aff548f">
         {/* सही favicon */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
