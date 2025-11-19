@@ -2,79 +2,35 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
-const title =
-  "Free AI Content Idea Generator 2025 | TikTok, Instagram, YouTube | TrendSpark AI";
-const description =
-  "Generate unlimited, brand-new content ideas for TikTok, Instagram, YouTube, and more with TrendSpark AI. Our free, offline multi-tool includes a hashtag generator and caption templates to supercharge your social media presence.";
+const title = "Free AI Content Idea Generator 2025 | TikTok, Instagram, YouTube | TrendSpark AI";
+const description = "Generate unlimited, brand-new content ideas for TikTok, Instagram, YouTube, and more with TrendSpark AI. Our free, offline multi-tool includes a hashtag generator and caption templates to supercharge your social media presence.";
 
 export const metadata: Metadata = {
   title,
   description,
   keywords: [
-    "AI content generator",
-    "content idea generator",
-    "TikTok ideas",
-    "Instagram ideas",
-    "YouTube ideas",
-    "social media ideas",
-    "free content ideas",
-    "TrendSpark AI",
-    "hashtag generator",
-    "caption templates",
+    "AI content generator", "content idea generator", "TikTok ideas", "Instagram ideas",
+    "YouTube ideas", "social media ideas", "free content ideas", "TrendSpark AI",
+    "hashtag generator", "caption templates"
   ],
-  openGraph: {
-    title,
-    description,
-    type: "website",
-    url: "https://trendsparkai.work",
-    images: [
-      {
-        url: "https://trendsparkai.work/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "TrendSpark AI - Content Idea Generator",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-    images: ["https://trendsparkai.work/twitter-image.jpg"],
-  },
+  openGraph: { title, description, type: "website", url: "https://trendsparkai.work" },
+  twitter: { card: "summary_large_image", title, description },
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  name: "TrendSpark AI",
-  description,
-  applicationCategory: "BusinessApplication",
-  operatingSystem: "Any",
-  browserRequirements: "Requires a modern web browser.",
-  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="scroll-smooth">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-        {/* ← THIS LINE ADDS YOUR NEW PROFESSIONAL LOGO ← */}
-        <link rel="icon" href="src/app/favicon.ico" sizes="any" />
+        {/* ← MONETAG VERIFICATION CODE (100% working) ← */}
+        <meta name="monetag" content="a04dd9ed352c18c8b7f183464aff548f" />
 
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        {/* ← CORRECT FAVICON PATH ← */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+
       </head>
       <body className="font-body antialiased">
         {children}
