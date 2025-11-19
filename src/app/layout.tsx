@@ -24,11 +24,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        
+        {/* ← Adsterra Social Bar – सबसे ज्यादा कमाने वाला format */}
+        <script src="https://www.effectivegatecpm.com/wtdqrhqc55?key=95c09a33e9658563fbefdcac0a5b1ae1" async></script>
 
-        {/* Monetag verification – ये लाइन डालते ही verify हो जाएगा */}
-        <meta name="monetag" content="a04dd9ed352c18c8b7f183464aff548f" />
-
-        {/* सही favicon path */}
+        {/* सही favicon */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
 
