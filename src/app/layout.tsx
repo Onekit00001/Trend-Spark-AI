@@ -25,8 +25,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
         
-        {/* ← Adsterra Social Bar – सबसे ज्यादा कमाने वाला format */}
+      {/* Social Bar – पहले से है */}
         <script src="https://www.effectivegatecpm.com/wtdqrhqc55?key=95c09a33e9658563fbefdcac0a5b1ae1" async></script>
+        
+        {/* ← ये नई लाइन अभी add कर दो (In-Page Push) */}
+        <script src="https://www.effectivegatecpm.com/ifh827nw?key=dc52fbe50ae6cfd56dee1359b404d16b" async></script>
 
         {/* सही favicon */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
