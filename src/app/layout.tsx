@@ -8,8 +8,8 @@ const description =
   "Generate unlimited, brand-new content ideas for TikTok, Instagram, YouTube, and more with TrendSpark AI. Our free, offline multi-tool includes a hashtag generator and caption templates to supercharge your social media presence.";
 
 export const metadata: Metadata = {
-  title: title,
-  description: description,
+  title,
+  description,
   keywords: [
     "AI content generator",
     "content idea generator",
@@ -23,13 +23,13 @@ export const metadata: Metadata = {
     "caption templates",
   ],
   openGraph: {
-    title: title,
-    description: description,
+    title,
+    description,
     type: "website",
-    url: "https://trendspark.ai", // Replace with actual URL
+    url: "https://trendsparkai.work",
     images: [
       {
-        url: "https://trendspark.ai/og-image.jpg", // Replace with actual OG image URL
+        url: "https://trendsparkai.work/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "TrendSpark AI - Content Idea Generator",
@@ -38,9 +38,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: title,
-    description: description,
-    images: ["https://trendspark.ai/twitter-image.jpg"], // Replace with actual Twitter image URL
+    title,
+    description,
+    images: ["https://trendsparkai.work/twitter-image.jpg"],
   },
 };
 
@@ -48,22 +48,16 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   name: "TrendSpark AI",
-  description: description,
+  description,
   applicationCategory: "BusinessApplication",
   operatingSystem: "Any",
   browserRequirements: "Requires a modern web browser.",
-  offers: {
-    "@type": "Offer",
-    price: "0",
-    priceCurrency: "USD",
-  },
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="scroll-smooth">
       <head>
@@ -73,6 +67,10 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
+
+        {/* ← THIS LINE ADDS YOUR NEW PROFESSIONAL LOGO ← */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
