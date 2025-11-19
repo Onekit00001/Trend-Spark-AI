@@ -69,7 +69,7 @@ export default function RootLayout({
         />
 
         {/* ← THIS LINE ADDS YOUR NEW PROFESSIONAL LOGO ← */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="src/app/favicon.ico" sizes="any" />
 
         <script
           type="application/ld+json"
