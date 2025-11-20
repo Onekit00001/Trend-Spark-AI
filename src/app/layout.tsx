@@ -18,7 +18,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Adsterra Social Bar + In-Page Push */}
         <script src="https://www.effectivegatecpm.com/wtdqrhqc55?key=95c09a33e9658563fbefdcac0a5b1ae1" async></script>
         <script src="https://www.effectivegatecpm.com/ifh827nw?key=dc52fbe50ae6cfd56dee1359b404d16b" async></script>
-
+{/* ← नया Native Banner */}
+        <script async data-cfasync="false" src="//pl28094365.effectivegatecpm.com/6eaa19d8a6824496a6dfeea489379494/invoke.js"></script>
+        <div id="container-6eaa19d8a6824496a6dfeea489379494"></div>
         {/* PropellerAds Push + OnClick */}
         <script src="https://ad.propellerads.com/push/smart-link-3023446/push.js" async></script>
 <meta name="monetag" content="a04dd9ed352c18c8b7f183464aff548f">
