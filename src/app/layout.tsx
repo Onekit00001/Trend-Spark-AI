@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div id="container-6eaa19d8a6824496a6dfeea489379494"></div>
         {/* PropellerAds Push + OnClick */}
         <script src="https://ad.propellerads.com/push/smart-link-3023446/push.js" async></script>
-<meta name="monetag" content="a04dd9ed352c18c8b7f183464aff548f">
+
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
       <body className="font-body antialiased">
